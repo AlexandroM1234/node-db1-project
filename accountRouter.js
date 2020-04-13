@@ -58,5 +58,19 @@ router.put("/:id", (req, res) => {
     });
 });
 
-router.delete("/:id", (req, res) => {});
+router.delete("/:id", (req, res) => {
+  const { id } = req.params;
+  db("accounts")
+    .where({ id })
+    .delete({ id })
+    .then((post) => {
+      if (post) {
+        res.status(200).json({ message: "post deleted" });
+      } else {
+        res
+          .status(404)
+          .json({ message: "post with that ID could not be found" });
+      }
+    });
+});
 module.exports = router;
