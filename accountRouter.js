@@ -37,4 +37,26 @@ router.post("/", (req, res) => {
       console.log("error adding a new account", err);
     });
 });
+
+router.put("/:id", (req, res) => {
+  const changes = req.body;
+  const { id } = req.params;
+  db("accounts")
+    .where({ id })
+    .update(changes)
+    .then((count) => {
+      if (count) {
+        res.status(200).json(changes);
+      } else {
+        res
+          .status(404)
+          .json({ error: `no account with the ID of ${id} could be found` });
+      }
+    })
+    .catch((err) => {
+      console.log("error trying to change a account", err);
+    });
+});
+
+router.delete("/:id", (req, res) => {});
 module.exports = router;
